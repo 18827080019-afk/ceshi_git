@@ -1,0 +1,14 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "当前学习：Agent 生命周期",
+      "type": "debugpy",
+      "request": "launch",
+      "program": "${workspaceFolder}/AI学习/阶段2/2026.8第三周 生命周期(学习修改内容)/main.py",
+      "cwd": "${workspaceFolder}",
+      "console": "integratedTerminal",
+      "envFile": "${workspaceFolder}/.env"
+    }
+  ]
+}

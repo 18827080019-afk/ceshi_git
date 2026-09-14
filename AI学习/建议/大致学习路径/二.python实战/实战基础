@@ -1,0 +1,340 @@
+# 如果你已经完成了 Python 基础（变量、条件判断、循环、函数、列表、字典等），并且目标是 **AI 应用开发**，那么下一阶段不建议立刻去学复杂算法或数据结构，而是进入：
+
+# # 第二阶段：Python 实战基础（2~4周）
+
+# 目标：
+
+# > 能读懂 AI 项目的代码，并能自己写简单项目。
+
+# ---
+
+# ## 1. 文件操作（重点）
+
+# 学会：
+
+# ```python
+# with open("test.txt", "r", encoding="utf-8") as f:
+#     text = f.read()
+# ```
+
+# 以及：
+
+# ```python
+# with open("result.txt", "w", encoding="utf-8") as f:
+#     f.write("你好")
+# ```
+
+# 掌握：
+
+# * 读取 txt
+# * 写入 txt
+# * 逐行读取
+
+# ```python
+# for line in f:
+#     print(line)
+# ```
+
+# 为什么重要？
+
+# 因为 AI 经常需要：
+
+# * 读取文档
+# * 保存结果
+# * 构建知识库
+
+# ---
+
+# ## 2. 模块与库（重点）
+
+# Python 最大的优势是生态丰富。
+
+# 例如：
+
+# ```python
+# import math
+
+# print(math.sqrt(16))
+# ```
+
+# 这里：
+
+# * `math` 是模块
+# * `sqrt()` 是模块里的函数
+
+# AI 项目会大量使用：
+
+# ```python
+# import requests
+# import pandas
+# import openai
+# ```
+
+# 所以要理解：
+
+# ```text
+# Python文件
+# ↓
+# 导入库
+# ↓
+# 调用库里的函数
+# ```
+
+# ---
+
+# ## 3. 异常处理
+
+# 学会处理报错。
+
+# 例如：
+
+# ```python
+# try:
+#     num = int(input("输入数字："))
+#     print(num)
+# except:
+#     print("输入错误")
+# ```
+
+# AI 项目中经常用来：
+
+# * 处理网络失败
+# * 处理文件不存在
+# * 处理 API 调用错误
+
+# ---
+
+# ## 4. JSON（非常重要）
+
+# AI API 最常见的数据格式。
+
+# 例如：
+
+# ```python
+# data = {
+#     "question": "什么是AI",
+#     "answer": "人工智能"
+# }
+# ```
+
+# 转换为 JSON：
+
+# ```python
+# import json
+
+# json_str = json.dumps(data)
+# ```
+
+# 读取 JSON：
+
+# ```python
+# obj = json.loads(json_str)
+# ```
+
+# 以后调用大模型 API 几乎天天见。
+
+# ---
+
+# ## 5. Requests（非常重要）
+
+# 学会发送网络请求。
+
+# 安装：
+
+# ```bash
+# pip install requests
+# ```
+
+# 简单例子：
+
+# ```python
+# import requests
+
+# response = requests.get(
+#     "https://api.github.com"
+# )
+
+# print(response.status_code)
+# ```
+
+# 这是未来调用 AI 接口的基础。
+
+# ---
+
+# # 第三阶段：数据处理（2周）
+
+# AI 应用几乎离不开数据。
+
+# ---
+
+# ## Pandas
+
+# 安装：
+
+# ```bash
+# pip install pandas
+# ```
+
+# 读取 CSV：
+
+# ```python
+# import pandas as pd
+
+# df = pd.read_csv("data.csv")
+# print(df.head())
+# ```
+
+# 学会：
+
+# * 读取数据
+# * 查看数据
+# * 保存数据
+
+# 即可。
+
+# ---
+
+# ## Excel
+
+# ```python
+# df = pd.read_excel("成绩.xlsx")
+# ```
+
+# 很多实际项目都会用到。
+
+# ---
+
+# # 第四阶段：开始接触 AI
+
+# 此时就可以开始做真正的 AI 项目了。
+
+# ---
+
+# ## 调用大模型 API
+
+# 例如：
+
+# ```python
+# from openai import OpenAI
+# ```
+
+# 理解：
+
+# ```text
+# 用户输入
+# ↓
+# 发送请求
+# ↓
+# 模型回答
+# ↓
+# 返回结果
+# ```
+
+# ---
+
+# ## 做第一个 AI 聊天机器人
+
+# 流程：
+
+# ```text
+# 用户提问
+# ↓
+# Python获取问题
+# ↓
+# 调用模型
+# ↓
+# 打印回答
+# ```
+
+# 这是最好的入门项目。
+
+# ---
+
+# # 第五阶段：RAG 知识库
+
+# 学习：
+
+# ```text
+# TXT
+# PDF
+# Word
+# Excel
+# ```
+
+# 读取内容后：
+
+# ```text
+# 文档
+# ↓
+# 切分
+# ↓
+# 向量化
+# ↓
+# 检索
+# ↓
+# AI回答
+# ```
+
+# 这就是很多企业知识库的原理。
+
+# ---
+
+# # 第六阶段：Agent（智能体）
+
+# 你之前学的函数开始发挥作用：
+
+# ```python
+# search_web()
+# read_pdf()
+# send_email()
+# ```
+
+# Agent 会根据问题自动选择工具：
+
+# ```text
+# 用户问题
+# ↓
+# 判断需求
+# ↓
+# 调用对应函数
+# ↓
+# 返回结果
+# ```
+
+# ---
+
+# ## 推荐学习顺序
+
+# ```text
+# Python基础
+# ↓
+# 文件操作
+# ↓
+# 模块与库
+# ↓
+# 异常处理
+# ↓
+# JSON
+# ↓
+# Requests
+# ↓
+# Pandas
+# ↓
+# OpenAI API
+# ↓
+# 聊天机器人
+# ↓
+# RAG知识库
+# ↓
+# AI Agent
+# ↓
+# 本地大模型
+# ↓
+# ComfyUI
+# ```
+
+# 对于你的目标（AI 应用方向），我会特别强调：
+
+# **函数 → 文件操作 → JSON → Requests → API 调用**
+
+# 这四部分学扎实后，你就已经具备阅读大多数 AI 教程和项目代码的能力了。很多初学者以为需要先学完所有 Python，实际上做到这一步就可以开始做 AI 项目并边做边学。

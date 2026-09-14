@@ -1,0 +1,21 @@
+# Local environment variables
+.env
+.env.*
+!.env.example
+!.env.sample
+!.env.template
+
+# Local editor workspace files
+*.code-workspace
+
+# Operating system files
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# Python local environment and caches
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/

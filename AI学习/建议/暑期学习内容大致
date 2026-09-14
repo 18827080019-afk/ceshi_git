@@ -1,0 +1,938 @@
+用户
+   │
+   ▼
+Agent Runtime
+   │
+   ├── Memory
+   ├── Tool Registry
+   ├── Executor
+   ├── Tool Loop
+   │
+   ▼
+Tool
+ ├── RAG
+ ├── ComfyUI
+ ├── File
+ └── API
+   │
+   ▼
+LLM
+   │
+   ▼
+最终回答 / 图片生成
+
+# Agent工程化阶段后续学习规划
+
+当前完成：
+
+```
+Agent Runtime基础封装
+
+```
+
+你的项目已经从：
+
+```
+LLM + Tool Demo
+
+```
+
+进入：
+
+```
+可扩展 Agent Framework 雏形
+
+```
+
+后续重点不是继续堆功能，而是补齐工业 Agent 系统缺失的工程能力。
+
+---
+
+# 当前阶段定位
+
+## 已完成（Day1-Day29）
+
+### 基础能力层
+
+```
+Python基础
+↓
+LLM API调用
+↓
+Prompt设计
+↓
+Tool系统
+↓
+Registry
+↓
+Schema
+↓
+Executor
+↓
+Memory
+↓
+State
+↓
+Context
+↓
+Prompt Builder
+↓
+Trace
+↓
+Agent Runtime
+
+```
+
+现在具备：
+
+```
+Agent运行闭环
+
+User
+ ↓
+Runtime
+ ↓
+LLM
+ ↓
+Tool
+ ↓
+Observation
+ ↓
+State
+ ↓
+Memory
+ ↓
+Final Answer
+
+```
+
+---
+
+# 下一阶段总目标
+
+从：
+
+```
+单机Agent Demo
+
+```
+
+升级：
+
+```
+可维护
+可调试
+可扩展
+可商业化
+
+的 Agent Framework
+
+```
+
+---
+
+# 阶段一：Runtime工程完善（Day30-Day35）
+
+目标：
+
+让 Agent Runtime 达到生产级基础。
+
+---
+
+# Day30：Runtime事件系统
+
+## 解决问题
+
+现在：
+
+```
+Trace
+
+记录一些步骤
+
+```
+
+但是不知道：
+
+* 哪一次任务？
+* 哪一次调用？
+* 哪一次工具失败？
+
+升级：
+
+```
+Run
+
+↓
+
+Step
+
+↓
+
+Event
+
+```
+
+学习：
+
+* Run ID
+* Event设计
+* 生命周期事件
+
+最终：
+
+```
+Agent执行记录
+
+{
+ run_id,
+ event,
+ timestamp,
+ data
+}
+
+```
+
+---
+
+# Day31：Agent状态机设计
+
+当前：
+
+```python
+while True
+
+```
+
+比较简单。
+
+升级：
+
+```
+Agent状态
+
+↓
+
+IDLE
+
+↓
+
+THINKING
+
+↓
+
+ACTING
+
+↓
+
+OBSERVING
+
+↓
+
+FINISHED
+
+↓
+
+ERROR
+
+```
+
+学习：
+
+* 状态驱动Agent
+* 防止流程混乱
+
+应用：
+
+复杂任务：
+
+```
+生成图片
+
+↓
+
+检查
+
+↓
+
+修改
+
+↓
+
+重新生成
+
+```
+
+---
+
+# Day32：Agent配置化
+
+现在：
+
+Agent创建：
+
+```python
+Agent(
+ memory,
+ llm,
+ executor
+)
+
+```
+
+升级：
+
+配置：
+
+```yaml
+agent.yaml
+
+llm:
+ model: deepseek
+
+memory:
+ type: local
+
+tools:
+ enable:
+  - search
+  - comfyui
+
+```
+
+学习：
+
+* 配置分离代码
+* 产品化基础
+
+---
+
+# Day33：错误恢复机制
+
+现在：
+
+工具失败：
+
+```
+error
+
+```
+
+升级：
+
+Agent能够：
+
+```
+Tool失败
+
+↓
+
+分析错误
+
+↓
+
+重新调用
+
+↓
+
+替代方案
+
+```
+
+学习：
+
+* Retry
+* Timeout
+* Fallback
+
+应用：
+
+ComfyUI：
+
+```
+GPU失败
+
+↓
+
+切换任务
+
+```
+
+---
+
+# Day34：Agent日志系统
+
+区别：
+
+Trace：
+
+```
+业务过程
+
+```
+
+Log：
+
+```
+系统运行
+
+```
+
+学习：
+
+* logging
+* debug模式
+* error日志
+
+目标：
+
+出现问题：
+
+知道：
+
+```
+哪里错
+
+为什么错
+
+怎么修
+
+```
+
+---
+
+# Day35：Runtime小版本整理
+
+整理：
+
+当前：
+
+```
+Agent Framework v0.1
+
+```
+
+结构：
+
+```
+agent/
+
+├── runtime.py
+
+├── memory.py
+
+├── llm.py
+
+├── executor.py
+
+├── state.py
+
+├── trace.py
+
+```
+
+形成稳定基础。
+
+---
+
+# 阶段二：RAG能力接入（Day36-Day45）
+
+目标：
+
+让 Agent 拥有自己的知识。
+
+当前：
+
+Agent：
+
+```
+只知道模型知识
+
+```
+
+升级：
+
+```
+Agent
+
++
+
+个人知识库
+
+```
+
+---
+
+# Day36：理解RAG架构
+
+学习：
+
+```
+Document
+
+↓
+
+Chunk
+
+↓
+
+Embedding
+
+↓
+
+Vector DB
+
+↓
+
+Retriever
+
+↓
+
+LLM
+
+```
+
+重点：
+
+理解：
+
+RAG为什么不是简单数据库。
+
+---
+
+# Day37：文档处理Pipeline
+
+实现：
+
+```
+PDF
+
+Word
+
+Markdown
+
+网页
+
+↓
+
+文本
+
+↓
+
+切片
+
+```
+
+---
+
+# Day38：Embedding接入
+
+学习：
+
+* 向量
+* 相似度
+* Embedding API
+
+---
+
+# Day39：向量数据库
+
+学习：
+
+选择：
+
+轻量：
+
+```
+Chroma
+
+```
+
+工程：
+
+```
+FAISS
+
+Milvus
+
+```
+
+---
+
+# Day40：RAG Tool化
+
+重点：
+
+不是单独RAG。
+
+而是：
+
+```
+RAG
+
+↓
+
+Tool
+
+↓
+
+Agent调用
+
+```
+
+结构：
+
+```
+Agent
+
+↓
+
+rag_search()
+
+↓
+
+知识库
+
+```
+
+---
+
+# Day41-Day45
+
+完成：
+
+```
+Agent + RAG
+
+```
+
+项目：
+
+AI学习助手：
+
+```
+上传资料
+
+↓
+
+AI问答
+
+↓
+
+引用来源
+
+```
+
+---
+
+# 阶段三：ComfyUI + LoRA Agent化（Day46-Day60）
+
+目标：
+
+进入你的商业方向。
+
+---
+
+## Day46：ComfyUI API理解
+
+学习：
+
+```
+Agent
+
+↓
+
+HTTP API
+
+↓
+
+ComfyUI
+
+↓
+
+图片
+
+```
+
+---
+
+## Day47：ComfyUI Tool封装
+
+实现：
+
+```python
+generate_image()
+
+```
+
+加入：
+
+Tool Registry。
+
+---
+
+## Day48：Workflow参数化
+
+学习：
+
+不要固定：
+
+```
+workflow.json
+
+```
+
+升级：
+
+```
+Prompt
+
+↓
+
+参数替换
+
+↓
+
+生成
+
+```
+
+---
+
+## Day49：LoRA管理系统
+
+实现：
+
+```
+LoRA库
+
+↓
+
+标签
+
+↓
+
+选择
+
+↓
+
+加载
+
+```
+
+---
+
+## Day50-Day60
+
+完成：
+
+```
+AI绘图Agent
+
+```
+
+流程：
+
+```
+用户描述
+
+↓
+
+Agent分析风格
+
+↓
+
+选择LoRA
+
+↓
+
+调用ComfyUI
+
+↓
+
+返回图片
+
+```
+
+---
+
+# 阶段四：商业化应用开发（Day61-Day90）
+
+目标：
+
+从技术Demo到产品。
+
+---
+
+## Web服务化
+
+学习：
+
+```
+FastAPI
+
+↓
+
+Agent API
+
+↓
+
+前端调用
+
+```
+
+---
+
+## 用户系统
+
+学习：
+
+* 用户隔离
+* Session
+* 数据保存
+
+---
+
+## 云部署
+
+学习：
+
+```
+Docker
+
+↓
+
+服务器
+
+↓
+
+GPU服务
+
+```
+
+---
+
+## 商业项目方向
+
+最终形成：
+
+### 方向1
+
+AI学习助手
+
+```
+Agent
++
+RAG
++
+知识库
+
+```
+
+---
+
+### 方向2
+
+AI内容生产助手
+
+```
+Agent
++
+ComfyUI
++
+LoRA
+
+```
+
+---
+
+### 方向3
+
+AI私人工作流助手
+
+```
+Agent
++
+Tools
++
+Automation
+
+```
+
+---
+
+# 推荐学习顺序总结
+
+```
+Day30-35
+
+Agent Runtime工程化
+
+
+↓
+
+Day36-45
+
+RAG知识库
+
+
+↓
+
+Day46-60
+
+ComfyUI + LoRA Agent化
+
+
+↓
+
+Day61-90
+
+产品化部署
+
+
+```
+
+---
+
+# 当前最重要节点
+
+你现在不要急着进入 RAG。
+
+原因：
+
+如果 Runtime 不稳定：
+
+以后：
+
+```
+RAG Tool
+
+ComfyUI Tool
+
+搜索 Tool
+
+```
+
+全部会堆回 main.py。
+
+所以：
+
+先完成：
+
+```
+Agent Framework v0.1
+
+```
+
+再接能力。
+
+下一步建议：
+
+继续：
+
+```
+Day30：Runtime事件系统
+
+```
+
+因为 Trace 是 Agent 工程化进入生产环境的第一个关键模块。

@@ -1,0 +1,5 @@
+pip:python自带包管理工具
+request:第三方工具库,pip管理对象
+*python本体版本,pip版本,request版本要求需对齐
+否会出现:兼容冲突等,
+尽量下高版本,稳定性好的python

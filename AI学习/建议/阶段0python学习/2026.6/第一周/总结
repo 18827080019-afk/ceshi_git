@@ -1,0 +1,13 @@
+# 1开启新项目时:
+# 装载开启venv(虚拟环境)
+# 2网络爬虫:
+# import requests导入库
+
+# requests.get()发送HTTP请求(获得网址的内容)
+
+
+# 需要安排报错准备(try-except)
+
+
+# 若成功则(response.status_code检查状态码函数)为200(200/404/500等状态码)
+# 网站用JSON格式返回数据时,可以使用response.json()方法将其转换为Python字典进行处理。

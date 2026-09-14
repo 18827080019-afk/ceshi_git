@@ -1,0 +1,32 @@
+memory记录的是：
+用户发生过什么
+Agent执行过什么
+工具返回了什么
+
+工具注册阶段
+Tool Schema
+工具说明属于：
+系统能力描述
+
+工具执行阶段
+ToolResponse
+eg:{
+    "tool":"add",
+    "status":"success",
+    "input":[2,3],
+    "output":5
+}
+
+
+对应AI决策实施:
+Agent决策阶段
+
+AI根据：
+
+用户需求
+
++
+工具说明
+
++
+工具结果

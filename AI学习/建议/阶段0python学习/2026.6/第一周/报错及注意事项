@@ -1,0 +1,13 @@
+# AttributeError: 'str' object has no attribute 'readlines'
+# readlines不应处理str对象
+
+#文本读取时，光标位置会跟着改变
+
+# 遍历每一行内容，判断用户输入的内容是否在其中,判断否时在循环结束后输出搜索失败,用一个函数标记是否
+# 不需要每循环一次都判断否
+
+
+# API完整学习常报错:
+# expecting value: line 1 column 1 (char 0)  #json解码错误，通常是因为响应内容不是有效的JSON格式，可能是空字符串或HTML错误页面等
+# json解析失败,可用其他工具查看响应内容,如response.text或response.content,以确定问题所在
+# null:null是JSON中的一个特殊值，表示空值或无效值。当API返回null时，可能意味着请求成功但没有数据可返回，或者请求失败但没有提供错误信息。需要根据具体API文档和上下文来判断null的含义。

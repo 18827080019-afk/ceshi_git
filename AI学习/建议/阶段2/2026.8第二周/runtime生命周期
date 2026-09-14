@@ -1,0 +1,23 @@
+Agent
+│
+│  整个Agent生命周期
+│
+└── Session
+     │
+     ├── Memory
+     │    │
+     │    ├── Task 1历史
+     │    ├── Task 2历史
+     │    └── Task 3历史
+     │
+     ├── run() #1
+     │    ├── State A
+     │    └── Trace A
+     │
+     ├── run() #2
+     │    ├── State B
+     │    └── Trace B
+     │
+     └── run() #3
+          ├── State C
+          └── Trace C

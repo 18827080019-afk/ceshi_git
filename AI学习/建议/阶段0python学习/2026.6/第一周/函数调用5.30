@@ -1,0 +1,48 @@
+def chat(m):
+    return f"你好, {m}"    #表达return的格式
+c=chat("小明")
+print(c)
+
+#文本函数调用基础:
+def read_file(path):
+    with open(path, "r", encoding="utf-8") as f:   #文件位置   read（读取模式）  按UTF-8 编码读取中文
+        return f.read()                            #with open(...) as f: 等价于f = open(...)  f.close()
+
+
+content = read_file("data.txt")
+
+print(content)
+
+
+#就任务类型选择函数:
+def math_tool():
+    return "计算器工作中"
+
+def search_tool():
+    return "搜索引擎工作中"
+
+task = "数学"
+
+if task == "数学":
+    result = math_tool()
+else:
+    result = search_tool()
+
+print(result)
+
+
+
+#AI agant简化版:
+def search_web(question):
+    return "搜索结果"
+
+def summarize(text):
+    return "总结内容"
+
+question = "人工智能的发展"
+
+search_result = search_web(question)
+
+answer = summarize(search_result)
+
+print(answer)

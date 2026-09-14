@@ -1,0 +1,9 @@
+🔹 前置确认：先让VS Code识别你的虚拟环境
+ 
+1. 打开VS Code，进入你的项目文件夹（ github copilot ）
+
+2. 按下  Ctrl+Shift+P ，输入并选择  Python: Select Interpreter 
+
+3. 在弹出的列表里，选中你项目里的虚拟环境，路径格式为： ./.venv/Scripts/python.exe 
+
+4. 选好后，VS Code右下角会显示带  (.venv)  标识的Python版本，说明识别成功。

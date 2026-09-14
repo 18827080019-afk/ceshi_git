@@ -1,0 +1,15 @@
+User
+ ↓
+Memory（历史）
+ ↓
+LLM（思考）
+ ↓
+Tool Decision
+ ↓
+Executor
+ ↓
+Observation（结果反馈）
+ ↓
+回到LLM（循环）
+ ↓
+Final Answer
