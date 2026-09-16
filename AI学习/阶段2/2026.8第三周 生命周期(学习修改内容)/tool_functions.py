@@ -1,33 +1,19 @@
 from response import success, error
 from models.tool import Tool
 def add(a, b):
-        try:
             result = a + b
-            return success("add", {"a": a, "b": b}, result)
-        except Exception as e:
-            return error("add", {"a": a, "b": b}, str(e))
+            return  result
 
 def multiply(a, b):
-        try:
             result = a * b
-            return success("multiply", {"a": a, "b": b}, result)
-        except Exception as e:
-            return error("multiply", {"a": a, "b": b}, str(e))
+            return result
 
 def upper(text):
-        try:
-            return success("upper", {"text": text}, text.upper())
-        except Exception as e:
-            return error("upper", {"text": text}, str(e))
-        
+            return text.upper()
 
 def read_file(path):
-        try:
             with open(path, "r", encoding="utf-8") as f:
                 return f.read()
-        except Exception as e:
-            return error("read_file", {"path": path}, str(e))
-
 
 #建立实例给LLm看
 add_tool=Tool("add", "两个数的加法", add,schema={

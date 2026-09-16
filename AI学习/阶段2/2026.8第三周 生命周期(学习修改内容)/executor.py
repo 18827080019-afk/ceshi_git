@@ -10,11 +10,20 @@ class Executor:
 
     def execute(self, tool_name,**arguments):
         # 1. 查找工具
+        self.trace.add_step(
+    "tool_call",
+    {
+        "tool":tool_name,
+        "arguments":arguments
+    }
+)
         tool = self.registry.get(tool_name)
 
         # 2. 判断工具是否存在
         if tool is None:
-            return error(tool_name, arguments, f"tool not found: {tool_name}") #自设错误边界
+            error_result=error(tool_name, arguments, f"tool not found: {tool_name}")
+            self.trace.add_step("tool_result",error_result)  #工具调用错误也要被trace记录
+            return error_result#自设错误边界
                
     
         schema = tool.schema
@@ -23,16 +32,17 @@ class Executor:
         #3. 检查参数是否符合工具的schema
         for key in arguments:  #拿字典的键  
             if key not in properties:
-                return error(tool_name,arguments,f"unknown parameter:{key}") #
+                error_result=error(tool_name,arguments,f"unknown parameter:{key}")
+                self.trace.add_step("tool_result",error_result)
+                return error_result #
 
-        self.trace.add_step("tool_call",{"tool": tool_name,"arguments": arguments})
-
+        
         # 3. 执行工具
         try:
             result = tool.run(**arguments)
-            self.trace.add_step("tool_result",result)
-            return result
-
+            result_success=success(tool_name,arguments,result)
+            self.trace.add_step("tool_result",result_success)
+            return result_success
         # 4. 捕获错误
         except Exception as e:
             error_result = error(tool_name,arguments,str(e))

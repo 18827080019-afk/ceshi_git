@@ -23,9 +23,7 @@ def main():
     registry.register(add_tool)
     registry.register(multiply_tool)
 
-    trace = Trace()
-    state = State()
-    executor=Executor(registry, trace)
+    executor=Executor(registry, None)
     
     contextBuilder=ContextBuilder()
     llm_tools_context=build_tool_context(registry)#加载完成工具信息
@@ -33,13 +31,17 @@ def main():
 
     memory = Memory()
     llm = LLM(model=os.getenv("DEEPSEEK_MODEL", "deepseek-chat"), api_key=api_key, base_url=os.getenv("DEEPSEEK_BASE_URL", "https://api.deepseek.com"))
-    agent=Agent(memory,llm,state,contextBuilder,promptBuilder,executor,trace,llm_tools_context)
+    agent=Agent(memory,llm,contextBuilder,promptBuilder,executor,llm_tools_context)
     while True:
         user_input = input("\nUser: ")
         if user_input == "exit":
             break
         result = agent.run(user_input)
-        print(f"Assistant: {result},记录:{trace.get_trace()}")
+        print("State:",agent.state.get())
+        print("Trace:",agent.trace.get_trace())
+        print("Memory:",agent.memory.get_memory())
+
+        print(f"Assistant: {result},记录:{agent.trace.get_trace()}")
         
 if __name__ == "__main__":
     main()
