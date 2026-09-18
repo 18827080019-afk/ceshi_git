@@ -19,9 +19,8 @@ class Agent:
         self.trace = Trace()
         self.state = State()
         self.executor.trace = self.trace
-        self.update_memory("user",user_input)
-        self.update_state("task",user_input)
         self.update_state("status", "running")
+        self.update_state("task",user_input)
         self.trace.add_step("user_input", user_input)
 
     def run(self,user_input):
@@ -33,6 +32,8 @@ class Agent:
 
             if result is not None:
                 self.update_state("status","success")
+                self.update_memory("user",user_input)
+                self.update_memory("assistant",result)
                 return result
             step_count += 1
         self.update_state("status","max_steps")
@@ -55,20 +56,17 @@ class Agent:
 
         if action=="final":
             answer=response["answer"]
-            self.update_memory("assistant",answer)
+            
             self.trace.add_step("final_answer", answer)
             return answer
 
         if action=="tool":
             result=self.execute_tool(response)
-            self.update_memory("tool", result)
-            self.state.update_context("result", result)
-
+            self.state.append_context("tool_result", result)
                     # if result.get("status")=="error":
                     #     self.state.update_context("tool_status","error")
                     # else:
-                    #     self.state.update_context("tool_status","success")
-                                                  
+                    #     self.state.update_context("tool_status","success")               
             return None
         
 

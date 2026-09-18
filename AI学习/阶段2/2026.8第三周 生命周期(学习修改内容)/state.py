@@ -19,9 +19,14 @@ class State:
     def get(self):
         return self.data
 
-    def to_context(self):
+    def to_context(self):#显示给后台看
         return {
-        "task":self.data["task"],
         "status":self.data["status"],
         "context":self.data["context"]
     }
+
+
+    def append_context(self,key,value):
+        if key not in self.data["context"]:
+            self.data["context"][key] = []
+        self.data["context"][key].append(value)

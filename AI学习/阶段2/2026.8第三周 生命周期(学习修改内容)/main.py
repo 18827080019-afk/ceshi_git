@@ -37,11 +37,20 @@ def main():
         if user_input == "exit":
             break
         result = agent.run(user_input)
-        print("State:",agent.state.get())
-        print("Trace:",agent.trace.get_trace())
-        print("Memory:",agent.memory.get_memory())
 
-        print(f"Assistant: {result},记录:{agent.trace.get_trace()}")
+
+        # print("State:",agent.state.get())
+        # print("Trace:",agent.trace.get_trace())
+        # print("Memory:",agent.memory.get_memory())
+
+        # print(f"Assistant: {result},记录:{agent.trace.get_trace()}")
         
 if __name__ == "__main__":
     main()
+    # #message检验
+    # print("\n===== MESSAGES =====")
+    # for message in messages:
+    #     print(message)
+    # print("STATE:",agent.state.get())
+    # print("MEMORY:",agent.memory.get_memory())
+    # print("TRACE:",agent.trace.get_trace())

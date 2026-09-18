@@ -21,11 +21,25 @@ class PromptBuilder:
 {context["state"]}
 可用工具:
 {context["tools"]}
-记忆:
-{context["memory"]}
+
 """
+       
         messages = [
-            {"role":"system","content":system_prompt},
-            {"role":"user","content":context["user_input"]}
+            {
+                "role":"system",
+                "content":system_prompt
+            }
         ]
+
+        messages.extend(
+            context["memory"]
+        )
+
+        messages.append(
+            {
+                "role":"user",
+                "content":context["user_input"]
+            }
+        )
+
         return messages
