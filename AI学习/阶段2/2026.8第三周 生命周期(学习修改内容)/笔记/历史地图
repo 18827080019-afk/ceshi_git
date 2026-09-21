@@ -1,0 +1,49 @@
+
+#_start_run()
+# 负责：
+# 创建一次Task需要的State / Trace
+# 初始化生命周期
+
+# step()
+# 负责：
+# Context → Prompt → LLM response
+
+# protocol()
+# 负责：
+# 验证LLM输出协议
+# 尽量做纯函数式校验
+
+# handle_action()
+# 负责：
+# 合法Action的路由
+
+# execute_tool()
+# 负责：
+# 把Agent动作转交Executor
+
+# Executor.execute()
+# 负责：
+# Tool调用边界
+# Schema验证
+# 异常捕获
+# 统一ToolResponse
+
+# run()
+# 负责：
+# 整个Task生命周期
+# 循环
+# 错误恢复
+# 状态转换
+# Memory最终提交
+
+# Memory
+# 负责：
+# 跨Task历史
+
+# State
+# 负责：
+# 当前Task工作状态
+
+# Trace
+# 负责：
+# 发生过什么

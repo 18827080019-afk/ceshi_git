@@ -25,10 +25,7 @@ class LLM:
         try:
             return json.loads(text)
 
-        except:
-            return {
-                "action":"final",
-                "answer":text
-            }
+        except json.JSONDecodeError:
+            return text
 
    

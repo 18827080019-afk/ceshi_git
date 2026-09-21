@@ -10,13 +10,7 @@ class Executor:
 
     def execute(self, tool_name,**arguments):
         # 1. 查找工具
-        self.trace.add_step(
-    "tool_call",
-    {
-        "tool":tool_name,
-        "arguments":arguments
-    }
-)
+        self.trace.add_step("tool_call",{ "tool":tool_name,"arguments":arguments})
         tool = self.registry.get(tool_name)
 
         # 2. 判断工具是否存在
@@ -42,28 +36,15 @@ class Executor:
 
         for key in required:
             if key not in arguments:
-
-                error_result = error(
-            tool_name,
-            arguments,
-            f"missing required parameter:{key}"
-        )
-
-                self.trace.add_step(
-            "tool_result",
-            error_result
-        )
+                error_result = error(tool_name,arguments,f"missing required parameter:{key}")
+                self.trace.add_step("tool_result",error_result)
 
                 return error_result
 
         #预设应有的数据类型
-        type_map = {
-    "number": (int,float),
-    "string": str#.....
-}       
-        #5检查输入数据类型是否正确
+        type_map = {"number": (int,float),"string": str}     
 
-
+        #5检查输入数据类型是否正确*************************************************8
         
         for key,value in arguments.items():
             expected_type = properties[key].get("type")
@@ -72,36 +53,21 @@ class Executor:
             if expected_type == "number":
 
                 if isinstance(value,bool) or not isinstance(value,(int,float)):
-
                     error_result = error(tool_name,arguments,f"invalid type:{key}, expected number")
-
                     self.trace.add_step("tool_result",error_result)
 
                     return error_result
                 
             elif python_type is not None: #第一层,符合预设数据类型
+                if not isinstance(value,python_type): #第二层,符合arguments数据类型
 
-                if not isinstance(     #第二层,符合arguments数据类型
-            value,
-            python_type
-        ):
-
-                    error_result = error(
-                tool_name,
-                arguments,
-                f"invalid type:{key}, expected {expected_type}"
-            )
-
-                    self.trace.add_step(
-                "tool_result",
-                error_result
-            )
+                    error_result = error(tool_name,arguments,f"invalid type:{key}, expected {expected_type}")
+                    self.trace.add_step("tool_result",error_result)
 
                     return error_result
             else:
-                
+  
                 error_result = error(tool_name,arguments,f"unsupported schema type:{expected_type}")
-
                 self.trace.add_step("tool_result",error_result)
 
                 return error_result  
