@@ -1,0 +1,253 @@
+from dataclasses import dataclass
+import math
+
+
+# =========================
+# 数据对象
+# =========================
+
+@dataclass
+class Document:
+    text: str
+    metadata: dict
+
+
+@dataclass
+class Chunk:
+    text: str
+    metadata: dict
+
+
+@dataclass
+class RetrievalResult:
+    text: str
+    score: float
+    metadata: dict
+
+
+# =========================
+# Loader
+# =========================
+
+class TextLoader:
+
+    def load(self, text: str) -> Document:
+        return Document(
+            text=text,
+            metadata={"source": "demo.txt"}
+        )
+
+
+# =========================
+# Chunker
+# =========================
+
+class SimpleChunker:
+
+    def split(self, document: Document) -> list[Chunk]:
+
+        sentences = document.text.split("。")   #返回被切割的句子列表
+
+        chunks = []
+
+        for i, sentence in enumerate(sentences):
+
+            if not sentence.strip():
+                continue
+
+            chunks.append(
+                Chunk(
+                    text=sentence,
+                    metadata={
+                        **document.metadata,
+                        "chunk_id": i
+                    }
+                )
+            )
+
+        return chunks
+
+
+# =========================
+# Embedding
+# 极简教学实现
+# =========================
+
+class SimpleEmbedding:
+
+    keywords = [
+        "机器学习",
+        "过拟合",
+        "训练",
+        "测试",
+        "神经网络"
+    ]
+
+    def embed(self, text: str) -> list[float]:
+
+        return [
+            float(text.count(word))
+            for word in self.keywords
+        ]
+
+
+# =========================
+# VectorStore
+# =========================
+
+class VectorStore:
+
+    def __init__(self):
+        self.data = []
+
+    def add(self, chunk: Chunk, vector: list[float]):
+
+        self.data.append({
+            "chunk": chunk,
+            "vector": vector
+        })
+
+    def search(
+        self,
+        query_vector: list[float],
+        top_k=2
+    ) -> list[RetrievalResult]:
+
+        results = []
+
+        for item in self.data:
+
+            score = cosine_similarity(
+                query_vector,
+                item["vector"]
+            )
+
+            results.append(
+                RetrievalResult(
+                    text=item["chunk"].text,
+                    score=score,
+                    metadata=item["chunk"].metadata
+                )
+            )
+
+        results.sort(                         #降序score前二选取
+            key=lambda x: x.score,
+            reverse=True
+        )
+
+        return results[:top_k]
+
+
+# =========================
+# Retriever
+# =========================
+
+class Retriever:
+
+    def __init__(self, embedding, vector_store):
+        self.embedding = embedding
+        self.vector_store = vector_store
+
+    def retrieve(self, query: str):
+
+        query_vector = self.embedding.embed(query)
+
+        return self.vector_store.search(
+            query_vector
+        )
+
+
+# =========================
+# Context Builder
+# =========================
+
+def build_context(results):
+
+    return "\n".join(
+        result.text
+        for result in results
+    )
+
+
+# =========================
+# 数学工具
+# =========================
+
+def cosine_similarity(a, b):
+
+    dot = sum(x * y for x, y in zip(a, b))
+
+    norm_a = math.sqrt(
+        sum(x * x for x in a)
+    )
+
+    norm_b = math.sqrt(
+        sum(x * x for x in b)
+    )
+
+    if norm_a == 0 or norm_b == 0:
+        return 0
+
+    return dot / (norm_a * norm_b)
+
+
+# =========================
+# main
+# =========================
+
+text = """
+机器学习可以从数据中学习规律。
+过拟合是模型在训练数据表现很好但测试数据表现较差。
+神经网络是一种机器学习模型。
+"""
+
+
+loader = TextLoader()
+chunker = SimpleChunker()
+embedding = SimpleEmbedding()
+vector_store = VectorStore()
+
+
+# ---------- 知识入库 ----------
+
+document = loader.load(text)
+
+chunks = chunker.split(document)
+
+for chunk in chunks:
+
+    vector = embedding.embed(chunk.text)
+
+    vector_store.add(
+        chunk,
+        vector
+    )
+
+
+# ---------- 用户查询 ----------
+
+retriever = Retriever(
+    embedding,
+    vector_store
+)
+
+query = "为什么模型训练很好，但是测试效果差？"
+
+results = retriever.retrieve(query)
+
+context = build_context(results)
+
+
+print("Query:")
+print(query)
+
+print("\nRetrieval Results:")
+
+for result in results:
+    print(
+        result.score,
+        result.text
+    )
+
+print("\nContext:")
+print(context)
